@@ -11,12 +11,21 @@ I avoid it by install chrome and modify memory data, but it should be fixed in f
 
 const dotenv = require('dotenv')
 dotenv.config()
-const { Wechaty } = require('wechaty');
+const { Wechaty,WechatyOptions } = require('wechaty');
 
 const name = 'wechat-puppet-wechat';
 let bot = '';
+
+let puppetOptions={}
+
+if (process.env.WECHATY_PUPPET_PUPPETEER_ENDPOINT){
+  puppetOptions.endpoint = process.env.WECHATY_PUPPET_PUPPETEER_ENDPOINT
+}
+
+console.log()
 bot = new Wechaty({
   name, // generate xxxx.memory-card.json and save login data for the next login
+  puppetOptions,
 });
 
 //  二维码生成
@@ -48,12 +57,12 @@ bot.on('scan', onScan);
 bot.on('login', onLogin);
 bot.on('logout', onLogout);
 
-// for my envirenment only, avoid used
-console.log(process.arch); // x64
-Object.defineProperty(process, 'arch', {
-  value: 'arm64',
-});
-console.log(process.arch);
+// // for my envirenment only, avoid used
+// console.log(process.arch); // x64
+// Object.defineProperty(process, 'arch', {
+//   value: 'arm64',
+// });
+// console.log(process.arch);
 
 bot
   .start()
